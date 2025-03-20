@@ -1,50 +1,35 @@
-import { useState } from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { ComponentPropsWithoutRef, ElementRef, forwardRef } from "react";
+import * as CheckboxPrimitive from "@rn-primitives/checkbox";
+import { Platform } from "react-native";
+import { cn } from "@/lib/utils";
+import { Check } from "lucide-react-native";
 
-import { cn } from '../lib/utils';
-
-// TODO: make controlled (optional)
-interface CheckboxProps extends React.ComponentPropsWithoutRef<typeof View> {
-  label?: string;
-  labelClasses?: string;
-  checkboxClasses?: string;
-}
-function Checkbox({
-  label,
-  labelClasses,
-  checkboxClasses,
-  className,
-  ...props
-}: CheckboxProps) {
-  const [isChecked, setChecked] = useState(false);
-
-  const toggleCheckbox = () => {
-    setChecked(prev => !prev);
-  };
-
+const Checkbox = forwardRef<
+  ElementRef<typeof CheckboxPrimitive.Root>,
+  ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>
+>(({ className, ...props }, ref) => {
   return (
-    <View
-      className={cn('flex flex-row items-center gap-2', className)}
+    <CheckboxPrimitive.Root
+      ref={ref}
+      className={cn(
+        "web:peer h-4 w-4 native:h-[20] native:w-[20] shrink-0 rounded-sm native:rounded border border-primary web:ring-offset-background web:focus-visible:outline-none web:focus-visible:ring-2 web:focus-visible:ring-ring web:focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+        props.checked && "bg-primary",
+        className
+      )}
       {...props}
     >
-      <TouchableOpacity onPress={toggleCheckbox}>
-        <View
-          className={cn(
-            'w-4 h-4 border border-gray-700 rounded bg-background flex justify-center items-center',
-            {
-              'bg-foreground': isChecked,
-            },
-            checkboxClasses
-          )}
-        >
-          {isChecked && <Text className="text-background text-xs">✓</Text>}
-        </View>
-      </TouchableOpacity>
-      {label && (
-        <Text className={cn('text-primary', labelClasses)}>{label}</Text>
-      )}
-    </View>
+      <CheckboxPrimitive.Indicator
+        className={cn("items-center justify-center h-full w-full")}
+      >
+        <Check
+          size={12}
+          strokeWidth={Platform.OS === "web" ? 2.5 : 3.5}
+          className="text-primary-foreground"
+        />
+      </CheckboxPrimitive.Indicator>
+    </CheckboxPrimitive.Root>
   );
-}
+});
+Checkbox.displayName = CheckboxPrimitive.Root.displayName;
 
 export { Checkbox };

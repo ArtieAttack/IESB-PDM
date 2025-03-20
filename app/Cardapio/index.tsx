@@ -28,7 +28,7 @@ const Cardapio = () => {
         />
         <CardCardapio
           title="Folheado de Frango"
-          description="Massa folhada crocante recheada com frango temperado, oferecendo um sabor suculento e uma textura leve, ideal para um lanche rápido."
+          description="Massa folhada crocante recheada com frango temperado, oferecendo um sabor suculento, ideal para um lanche rápido."
           value="5,90"
           image="https://fastly.picsum.photos/id/995/200/300.jpg?hmac=eFU8vnJxVDadyN4EfO1gKTmd6m9u3C-jglYq9Gi34ew"
         />
