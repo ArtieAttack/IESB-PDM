@@ -1,28 +1,12 @@
-import { View, Text } from 'react-native';
+import { Link } from 'expo-router';
+import { View, Text, Linking } from 'react-native';
 
 const Header = () => {
   return (
-    <View
-      className="w-full pb-6 flex flex-row"
-      style={{
-        justifyContent: "space-between",
-        padding: 4,
-      }}
-    >
+    <View className="w-full p-4 flex flex-row justify-between items-center">
       <Text className="text-3xl font-bold">Padaria</Text>
-      <Text
-        className="border"
-        style={{
-          borderRadius: 5,
-          borderColor: "#2E8B57",
-          padding: 8,
-          backgroundColor: "#2E8B57",
-          color: "#FFF",
-          width: 95,
-          textAlign: "center",
-        }}
-      >
-        Login
+      <Text className="rounded-lg w-1/3 py-3 text-center text-white bg-[#2E8B57]">
+        <Link href="/auth/cadastro/Cadastro">Login</Link>
       </Text>
     </View>
   );
