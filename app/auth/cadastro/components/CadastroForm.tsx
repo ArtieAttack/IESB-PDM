@@ -13,7 +13,7 @@ const CadastroForm = ({ title, description }: CadastroFormProps) => {
       <Text className="font-semibold text-lg pb-2">{title}</Text>
       <TextInput
         placeholder={description}
-        className="w-full px-4 h-12 rounded-lg border-gray-300 border"
+        className="w-full px-4 h-12 rounded-lg bg-white"
       />
     </View>
   );

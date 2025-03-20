@@ -4,9 +4,11 @@ import Header from "./components/Header";
 
 export default function Index() {
   return (
-    <View className="flex flex-col w-full h-full p-4 bg-[#F9FAFB]">
+    <ScrollView className="w-full h-full">
       <Header />
-      <Cardapio />
-    </View>
+      <View className="flex flex-col w-full h-full p-4 bg-[#faf3d7]">
+        <Cardapio />
+      </View>
+    </ScrollView>
   );
 }
