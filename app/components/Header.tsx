@@ -1,13 +1,21 @@
+import { Link } from "expo-router";
 import { View, Text, Image } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const Header = () => {
   return (
-    <View className="w-full p-4 flex flex-row justify-between items-center bg-[#e8dbad]">
+    <SafeAreaView className="w-full h-24 p-4 flex flex-row justify-between items-center bg-[#e8dbad]" edges={["top", "left", "right"]}>
       <Image
         source={require("../../assets/images/logo.png")}
         style={{ width: 120, height: 60 }}
       />
-    </View>
+      <Link 
+        href="./auth/login"
+        className="bg-[#0b8185] px-16 py-2 rounded-md"
+      >
+        <Text className="text-white font-bold">Login</Text>
+        </Link>
+    </SafeAreaView>
   );
 };
 

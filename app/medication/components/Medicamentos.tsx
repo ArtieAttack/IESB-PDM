@@ -5,9 +5,7 @@ import {
   Text,
   Image,
   FlatList,
-  TouchableOpacity,
-  SafeAreaView,
-  ScrollView,
+  TouchableOpacity
 } from "react-native";
 
 // Os dados dos medicamentos
