@@ -1,12 +1,6 @@
-import { Separator } from "@/components/Separator";
+import { Separator } from "@/src/components/Separator";
 import React from "react";
-import {
-  View,
-  Text,
-  Image,
-  FlatList,
-  TouchableOpacity
-} from "react-native";
+import { View, Text, Image, FlatList, TouchableOpacity } from "react-native";
 
 // Os dados dos medicamentos
 const medicamentos = [

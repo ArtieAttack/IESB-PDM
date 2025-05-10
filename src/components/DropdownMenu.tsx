@@ -7,7 +7,7 @@ import {
   View,
   ViewStyle,
 } from "react-native";
-import { cn } from "@/lib/utils";
+import { cn } from "@/src/lib/utils";
 import { TextClassContext } from "./Text";
 import {
   Check,
@@ -111,8 +111,8 @@ const DropdownMenuContent = forwardRef<
                   overlayStyle,
                 ] as ViewStyle)
               : Platform.OS !== "web"
-                ? StyleSheet.absoluteFill
-                : undefined
+              ? StyleSheet.absoluteFill
+              : undefined
           }
           className={overlayClassName}
         >

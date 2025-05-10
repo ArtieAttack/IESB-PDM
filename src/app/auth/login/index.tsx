@@ -1,7 +1,7 @@
 import { SafeAreaView, Text, View, Image, TextInput } from "react-native";
 import React from "react";
 import { Link } from "expo-router";
-import { Separator } from "@/components/Separator";
+import { Separator } from "@/src/components/Separator";
 
 const Login = () => {
   return (
