@@ -8,9 +8,17 @@ export default function Index() {
   return (
     <View className="flex-1 bg-[#feffe4]">
       <Header />
-      <Text className="text-2xl font-bold text-[#0b8185] px-4 pt-6">
-        Medicamentos
-      </Text>
+      <View className="flex flex-row justify-between">
+        <Text className="text-2xl font-bold text-[#0b8185] px-4 pt-6">
+          Medicamentos
+        </Text>
+        <Link
+          href="/medication/components/Cadastro"
+          className="bg-[#0b8185] px-4 py-2 rounded-md mt-6 mr-4"
+        >
+          <Text className="text-white font-bold">Novo medicamento</Text>
+        </Link>
+      </View>
 
       <View className="flex-1 px-4 py-6 bg-[#feffe4">
         <View className="flex-1 bg-white shadow-md rounded-lg px-2">

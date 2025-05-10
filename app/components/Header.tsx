@@ -4,7 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 const Header = () => {
   return (
-    <SafeAreaView className="w-full h-24 p-4 flex flex-row justify-between items-center bg-[#e8dbad]" edges={["top", "left", "right"]}>
+    <SafeAreaView className="w-full h-36 px-4 flex flex-row justify-between items-center bg-[#e8dbad]">
       <Image
         source={require("../../assets/images/logo.png")}
         style={{ width: 120, height: 60 }}
