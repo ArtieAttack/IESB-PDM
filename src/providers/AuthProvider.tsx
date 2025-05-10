@@ -68,7 +68,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const login = async (credentials: LoginCredentials) => {
     try {
-
       console.log("Login credentials:", credentials);
 
       // Substitua esta chamada pela sua API real
@@ -86,7 +85,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
       // Armazena os dados de autenticação no AsyncStorage
       await AsyncStorage.setItem(AUTH_TOKEN_KEY, accessToken);
-      await AsyncStorage.setItem(AUTH_USER_KEY, JSON.stringify({ email, id, image, name }));
+      await AsyncStorage.setItem(
+        AUTH_USER_KEY,
+        JSON.stringify({ email, id, image, name })
+      );
 
       setData({
         token: accessToken,
@@ -103,20 +105,25 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const signUp = async (data: SignUpData) => {
     try {
       // Substitua esta chamada pela sua API real
-      const response = await api.post("/auth/signup", data);
+      const response = await api.post("/user", data);
 
-      const { token, user } = response.data;
+      const auth = await api.post("/auth", {
+        email: data.email,
+        password: data.password,
+      });
+
+      const { accessToken, email, id, image, name } = auth.data;
 
       // Atualiza os headers da API com o token
-      api.defaults.headers.common.Authorization = `Bearer ${token}`;
+      api.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
 
       // Armazena os dados de autenticação no AsyncStorage
-      await AsyncStorage.setItem(AUTH_TOKEN_KEY, token);
-      await AsyncStorage.setItem(AUTH_USER_KEY, JSON.stringify(user));
+      await AsyncStorage.setItem(AUTH_TOKEN_KEY, accessToken);
+      await AsyncStorage.setItem(AUTH_USER_KEY, JSON.stringify({ email, id, image, name }));
 
       setData({
-        token,
-        user,
+        token: accessToken,
+        user: { email, id, image, name },
         isAuthenticated: true,
         isLoading: false,
       });

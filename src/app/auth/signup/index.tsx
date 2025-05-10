@@ -13,6 +13,7 @@ import { useAuth } from "@/src/providers/AuthProvider";
 
 const Signup = () => {
   const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -40,6 +41,7 @@ const Signup = () => {
       // Invoca o método de registro do AuthProvider
       await signUp({
         name,
+        username,
         email,
         password,
       });
@@ -82,6 +84,15 @@ const Signup = () => {
           keyboardType="default"
           value={name}
           onChangeText={setName}
+        />
+
+        <Text className="text-xl font-bold text-[#0b8185] mt-4">Nome de Usuário</Text>
+        <TextInput
+          className="bg-white h-12 px-4 rounded-md shadow"
+          placeholder="Digite seu Nome de Usuário"
+          keyboardType="default"
+          value={username}
+          onChangeText={setUsername}
         />
 
         <Text className="text-xl font-bold text-[#0b8185] mt-4">Email</Text>
