@@ -28,7 +28,6 @@ export default function Index() {
             <Link
               href="/"
               className="bg-[#0b8185] rounded-lg py-2"
-              onPress={() => console.log("Adicionar medicamento")}
             >
               <Text className="text-white text-center text-lg font-bold">
                 Ver mais
