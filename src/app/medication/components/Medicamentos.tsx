@@ -1,78 +1,28 @@
 import { Separator } from "@/src/components/Separator";
 import React from "react";
-import { View, Text, Image, FlatList, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  FlatList,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
+import { useMedication, Medication } from "@/src/hooks/useMedication";
 
-// Os dados dos medicamentos
-const medicamentos = [
-  {
-    id: "1",
-    nome: "Paracetamol 500mg",
-    descricao: "Analgésico e antitérmico para alívio de dores e febres.",
-    horario: "08:00",
-    imagem:
-      "https://fastly.picsum.photos/id/901/200/200.jpg?hmac=BofL61KMrHssTtPwqR7iI272BvpjGsjt5PJ_ultE4Z8",
-  },
-  {
-    id: "2",
-    nome: "Ibuprofeno 400mg",
-    descricao: "Anti-inflamatório não esteroidal para dor e inflamação.",
-    horario: "12:00",
-    imagem:
-      "https://fastly.picsum.photos/id/901/200/200.jpg?hmac=BofL61KMrHssTtPwqR7iI272BvpjGsjt5PJ_ultE4Z8",
-  },
-  {
-    id: "3",
-    nome: "Amoxicilina 500mg",
-    descricao: "Antibiótico para tratamento de infecções bacterianas.",
-    horario: "18:00",
-    imagem:
-      "https://fastly.picsum.photos/id/901/200/200.jpg?hmac=BofL61KMrHssTtPwqR7iI272BvpjGsjt5PJ_ultE4Z8",
-  },
-  {
-    id: "4",
-    nome: "Omeprazol 20mg",
-    descricao: "Inibidor da bomba de prótons para problemas gástricos.",
-    horario: "20:00",
-    imagem:
-      "https://fastly.picsum.photos/id/901/200/200.jpg?hmac=BofL61KMrHssTtPwqR7iI272BvpjGsjt5PJ_ultE4Z8",
-  },
-  {
-    id: "5",
-    nome: "Loratadina 10mg",
-    descricao: "Anti-histamínico para alívio de sintomas alérgicos.",
-    horario: "22:00",
-    imagem:
-      "https://fastly.picsum.photos/id/901/200/200.jpg?hmac=BofL61KMrHssTtPwqR7iI272BvpjGsjt5PJ_ultE4Z8",
-  },
-  {
-    id: "6",
-    nome: "Dipirona 500mg",
-    fabricante: "DorFree",
-    descricao:
-      "Analgésico e antitérmico para alívio de dores e febres intensas.",
-    horario: "08:00",
-    imagem:
-      "https://fastly.picsum.photos/id/901/200/200.jpg?hmac=BofL61KMrHssTtPwqR7iI272BvpjGsjt5PJ_ultE4Z8",
-  },
-];
-
-interface Medicamento {
-  id: string;
-  nome: string;
-  descricao: string;
-  horario: string;
-  imagem: string;
-}
-
-// Dentro do MedicamentoItem, remova o Separator
-const MedicamentoItem = ({ item }: { item: Medicamento }) => {
+// Componente para exibir cada item de medicamento
+const MedicamentoItem = ({ item }: { item: Medication }) => {
   return (
     <TouchableOpacity
       className="flex-row gap-2 py-6"
       onPress={() => console.log(`Medicamento selecionado: ${item.nome}`)}
     >
       <Image
-        source={{ uri: item.imagem }}
+        source={{
+          uri:
+            item.imagem ||
+            "https://fastly.picsum.photos/id/901/200/200.jpg?hmac=BofL61KMrHssTtPwqR7iI272BvpjGsjt5PJ_ultE4Z8",
+        }}
         className="rounded-md"
         style={{ height: 100, width: 100 }}
       />
@@ -97,15 +47,44 @@ const MedicamentoItem = ({ item }: { item: Medicamento }) => {
 
 // Componente principal com separador condicional
 const MedicamentosList = () => {
+  const { medications, isLoading, error, refetch } = useMedication();
+
+  if (isLoading) {
+    return (
+      <View className="flex-1 justify-center items-center">
+        <ActivityIndicator size="large" color="#0b8185" />
+        <Text className="mt-2">Carregando medicamentos...</Text>
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View className="flex-1 justify-center items-center p-4">
+        <Text className="text-red-500 text-lg mb-4">
+          Erro ao carregar medicamentos!
+        </Text>
+        <TouchableOpacity
+          className="bg-[#0b8185] px-4 py-2 rounded-md"
+          onPress={() => refetch()}
+        >
+          <Text className="text-white font-bold">Tentar novamente</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
   return (
     <View className="flex-1 h-full px-2 gap-4">
       <FlatList
-        data={medicamentos}
+        data={medications || []}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => <MedicamentoItem item={item} />}
         ItemSeparatorComponent={({ leadingItem }) => {
           const isLastItem =
-            leadingItem?.id === medicamentos[medicamentos.length - 1].id;
+            medications &&
+            medications.length > 0 &&
+            leadingItem?.id === medications[medications.length - 1].id;
           return !isLastItem ? (
             <Separator className="w-full h-[1px] bg-[#0b8185]" />
           ) : null;

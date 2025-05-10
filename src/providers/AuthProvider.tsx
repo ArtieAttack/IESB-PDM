@@ -1,7 +1,7 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { AuthState, LoginCredentials, SignUpData, User } from '../types/auth';
-import api from '../services/api';
+import React, { createContext, useContext, useState, useEffect } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AuthState, LoginCredentials, SignUpData, User } from "../types/auth";
+import api from "../services/api";
 
 // Valores iniciais para o contexto
 const initialState: AuthState = {
@@ -27,8 +27,8 @@ const AuthContext = createContext<AuthContextData>({
 });
 
 // Chaves para armazenamento no AsyncStorage
-const AUTH_TOKEN_KEY = '@Auth:token';
-const AUTH_USER_KEY = '@Auth:user';
+const AUTH_TOKEN_KEY = "@Auth:token";
+const AUTH_USER_KEY = "@Auth:user";
 
 export interface AuthProviderProps {
   children: React.ReactNode;
@@ -47,7 +47,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
         if (token && user) {
           api.defaults.headers.common.Authorization = `Bearer ${token}`;
-          
+
           setData({
             token,
             user: JSON.parse(user),
@@ -55,11 +55,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
             isLoading: false,
           });
         } else {
-          setData(prev => ({ ...prev, isLoading: false }));
+          setData((prev) => ({ ...prev, isLoading: false }));
         }
       } catch (error) {
-        console.error('Erro ao carregar dados de autenticação:', error);
-        setData(prev => ({ ...prev, isLoading: false }));
+        console.error("Erro ao carregar dados de autenticação:", error);
+        setData((prev) => ({ ...prev, isLoading: false }));
       }
     }
 
@@ -68,26 +68,34 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const login = async (credentials: LoginCredentials) => {
     try {
+
+      console.log("Login credentials:", credentials);
+
       // Substitua esta chamada pela sua API real
-      const response = await api.post('/auth/login', credentials);
-      
-      const { token, user } = response.data;
+      const response = await api.post("/auth", credentials);
+
+      console.log("Login response:", response.data);
+
+      const { accessToken, email, id } = response.data;
+
+      console.log("AcessToken:", accessToken);
+      console.log("User data:", { email, id });
 
       // Atualiza os headers da API com o token
-      api.defaults.headers.common.Authorization = `Bearer ${token}`;
+      api.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
 
       // Armazena os dados de autenticação no AsyncStorage
-      await AsyncStorage.setItem(AUTH_TOKEN_KEY, token);
-      await AsyncStorage.setItem(AUTH_USER_KEY, JSON.stringify(user));
+      await AsyncStorage.setItem(AUTH_TOKEN_KEY, accessToken);
+      await AsyncStorage.setItem(AUTH_USER_KEY, JSON.stringify({ email, id }));
 
       setData({
-        token,
-        user,
+        token: accessToken,
+        user: { email, id },
         isAuthenticated: true,
         isLoading: false,
       });
     } catch (error) {
-      console.error('Erro ao fazer login:', error);
+      console.error("Erro ao fazer login:", error);
       throw error;
     }
   };
@@ -95,8 +103,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const signUp = async (data: SignUpData) => {
     try {
       // Substitua esta chamada pela sua API real
-      const response = await api.post('/auth/signup', data);
-      
+      const response = await api.post("/auth/signup", data);
+
       const { token, user } = response.data;
 
       // Atualiza os headers da API com o token
@@ -113,7 +121,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         isLoading: false,
       });
     } catch (error) {
-      console.error('Erro ao fazer cadastro:', error);
+      console.error("Erro ao fazer cadastro:", error);
       throw error;
     }
   };
@@ -133,7 +141,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         isLoading: false,
       });
     } catch (error) {
-      console.error('Erro ao fazer logout:', error);
+      console.error("Erro ao fazer logout:", error);
       throw error;
     }
   };
@@ -157,7 +165,7 @@ export function useAuth(): AuthContextData {
   const context = useContext(AuthContext);
 
   if (!context) {
-    throw new Error('useAuth deve ser usado dentro de um AuthProvider');
+    throw new Error("useAuth deve ser usado dentro de um AuthProvider");
   }
 
   return context;

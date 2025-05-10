@@ -1,6 +1,5 @@
 export interface User {
   id: string;
-  name: string;
   email: string;
   // Adicione mais campos conforme necessário
 }

@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { FlatList, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context"; // ✅ Import correto
 import Header from "./components/Header";
@@ -5,6 +6,7 @@ import MedicamentosList from "./medication/components/Medicamentos";
 import { Link } from "expo-router";
 
 export default function Index() {
+
   return (
     <View className="flex-1 bg-[#feffe4]">
       <Header />
@@ -25,10 +27,7 @@ export default function Index() {
           <MedicamentosList />
 
           <View className="py-4 px-2">
-            <Link
-              href="/"
-              className="bg-[#0b8185] rounded-lg py-2"
-            >
+            <Link href="/" className="bg-[#0b8185] rounded-lg py-2">
               <Text className="text-white text-center text-lg font-bold">
                 Ver mais
               </Text>
