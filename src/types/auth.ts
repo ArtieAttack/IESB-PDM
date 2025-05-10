@@ -1,6 +1,8 @@
 export interface User {
   id: string;
   email: string;
+  name: string;
+  image: string; // URL da imagem do usuário
   // Adicione mais campos conforme necessário
 }
 

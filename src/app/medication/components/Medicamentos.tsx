@@ -12,6 +12,12 @@ import { useMedication, Medication } from "@/src/hooks/useMedication";
 
 // Componente para exibir cada item de medicamento
 const MedicamentoItem = ({ item }: { item: Medication }) => {
+
+  const horarioFormatado = new Date(item.horario).toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
   return (
     <TouchableOpacity
       className="flex-row gap-2 py-6"
@@ -38,7 +44,7 @@ const MedicamentoItem = ({ item }: { item: Medication }) => {
 
         <View className="flex-row items-center gap-2">
           <Text className="text-base font-bold text-[#0b8185]">Horário:</Text>
-          <Text className="text-base text-[#0b8185]">{item.horario}</Text>
+          <Text className="text-base text-[#0b8185]">{horarioFormatado}</Text>
         </View>
       </View>
     </TouchableOpacity>

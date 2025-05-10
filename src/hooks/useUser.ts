@@ -8,19 +8,19 @@ const USER_PROFILE_KEY = "userProfile";
 
 // Hook para buscar e gerenciar dados do usuário logado
 export function useUser() {
-  const { isAuthenticated, token } = useAuth();
+  const { isAuthenticated, token, user } = useAuth();
   const queryClient = useQueryClient();
 
   // Query para buscar o perfil do usuário
   const {
-    data: user,
+    data: userData,
     isLoading,
     error,
     refetch,
   } = useQuery({
     queryKey: [USER_PROFILE_KEY],
     queryFn: async () => {
-      const response = await api.get("/user/profile");
+      const response = await api.get(`/user?field=id&value=${user?.id}`);
       return response.data;
     },
     // Só executa a query se o usuário estiver autenticado
@@ -30,7 +30,7 @@ export function useUser() {
   // Mutation para atualizar o perfil do usuário
   const updateProfileMutation = useMutation({
     mutationFn: async (userData: Partial<User>) => {
-      const response = await api.put("/user/profile", userData);
+      const response = await api.put("/user", userData);
       return response.data;
     },
     // Quando a atualização for bem-sucedida, atualizamos o cache
@@ -40,7 +40,7 @@ export function useUser() {
   });
 
   return {
-    user,
+    user: userData,
     isLoading,
     error,
     refetch,

@@ -34,11 +34,18 @@ const Cadastro = () => {
       const imagem =
         "https://fastly.picsum.photos/id/901/200/200.jpg?hmac=BofL61KMrHssTtPwqR7iI272BvpjGsjt5PJ_ultE4Z8";
 
+      const horarioFormatado = horario.replace(/[^0-9]/g, "");
+      const horas = horarioFormatado.slice(0, 2);
+      const minutos = horarioFormatado.slice(2, 4);
+      const horarioDate = new Date();
+      horarioDate.setHours(parseInt(horas, 10));
+      horarioDate.setMinutes(parseInt(minutos, 10));
+
       // Chama a mutação para adicionar o medicamento
       await addMedication(
         {
           nome,
-          horario,
+          horario: horarioDate.toISOString(),
           descricao,
           imagem,
         },
@@ -93,9 +100,15 @@ const Cadastro = () => {
           <TextInput
             className="bg-white h-12 px-4 rounded-md shadow"
             placeholder="Digite o horário a ser tomado"
-            keyboardType="default"
+            keyboardType="number-pad"
             value={horario}
-            onChangeText={setHorario}
+            onChangeText={(text) => {
+              // Formata o horário para o padrão HH:MM
+              const formattedText = text.replace(/[^0-9]/g, "").slice(0, 4);
+              const hours = formattedText.slice(0, 2);
+              const minutes = formattedText.slice(2, 4);
+              setHorario(`${hours}${minutes ? ":" + minutes : ""}`);
+            }}
           />
 
           <Text className="text-xl font-bold text-[#0b8185] mt-4">

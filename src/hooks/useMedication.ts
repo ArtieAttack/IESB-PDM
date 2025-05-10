@@ -38,6 +38,7 @@ export function useMedication() {
   // Mutation para adicionar um novo medicamento
   const addMedicationMutation = useMutation({
     mutationFn: async (medicationData: Omit<Medication, "id">) => {
+      console.log("Adicionando medicamento:", medicationData);
       const response = await api.post("/medication", medicationData);
       return response.data;
     },

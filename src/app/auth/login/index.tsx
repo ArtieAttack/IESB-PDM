@@ -11,8 +11,6 @@ import React, { useState } from "react";
 import { Link, useRouter } from "expo-router";
 import { Separator } from "@/src/components/Separator";
 import { useAuth } from "@/src/providers/AuthProvider";
-import axios from "axios";
-import { useEffect } from "react";
 
 const Login = () => {
   const [email, setEmail] = useState("");

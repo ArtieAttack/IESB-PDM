@@ -76,21 +76,21 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
       console.log("Login response:", response.data);
 
-      const { accessToken, email, id } = response.data;
+      const { accessToken, email, id, image, name } = response.data;
 
       console.log("AcessToken:", accessToken);
-      console.log("User data:", { email, id });
+      console.log("User data:", { email, id, image, name });
 
       // Atualiza os headers da API com o token
       api.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
 
       // Armazena os dados de autenticação no AsyncStorage
       await AsyncStorage.setItem(AUTH_TOKEN_KEY, accessToken);
-      await AsyncStorage.setItem(AUTH_USER_KEY, JSON.stringify({ email, id }));
+      await AsyncStorage.setItem(AUTH_USER_KEY, JSON.stringify({ email, id, image, name }));
 
       setData({
         token: accessToken,
-        user: { email, id },
+        user: { email, id, image, name },
         isAuthenticated: true,
         isLoading: false,
       });
