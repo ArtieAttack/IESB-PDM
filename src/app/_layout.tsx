@@ -26,9 +26,9 @@ function AuthGuard({ children }: { children: React.ReactNode }) {
 
     // Usuário não está autenticado e não está em uma rota de autenticação
     // -> redireciona para login
-    else if (!isAuthenticated && !inAuthGroup) {
+    /*else if (!isAuthenticated && !inAuthGroup) {
       router.replace("/auth/login");
-    }
+    }*/
   }, [isAuthenticated, isLoading, segments, router]);
 
   // Enquanto está carregando, ou quando está redirecionando,

@@ -6,6 +6,8 @@ import {
   Image,
   TouchableOpacity,
   ActivityIndicator,
+  SafeAreaView,
+  ScrollView,
 } from "react-native";
 import React, { useState } from "react";
 import { Link, useRouter } from "expo-router";
@@ -57,8 +59,8 @@ const Signup = () => {
   };
 
   return (
-    <View className="flex-1 bg-[#feffe4] px-4">
-      <View className="pt-36 items-center">
+    <ScrollView className="flex-1 bg-[#feffe4] px-4">
+      <View className="pt-16 items-center">
         <Image
           source={require("../../../assets/images/logo.png")}
           style={{ width: 160, height: 80 }}
@@ -151,10 +153,8 @@ const Signup = () => {
           </Link>
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
 export default Signup;
-
-const styles = StyleSheet.create({});

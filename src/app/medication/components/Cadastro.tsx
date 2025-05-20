@@ -1,6 +1,5 @@
 import {
   SafeAreaView,
-  StyleSheet,
   Text,
   View,
   TextInput,
@@ -8,9 +7,10 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   ScrollView,
+  Modal,
 } from "react-native";
 import React, { useState } from "react";
-import { Link, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import { useMedication } from "@/src/hooks/useMedication";
 
 const Cadastro = () => {
@@ -18,19 +18,24 @@ const Cadastro = () => {
   const [horario, setHorario] = useState("");
   const [descricao, setDescricao] = useState("");
   const [error, setError] = useState("");
+
+  const vinculos = ["João", "Maria", "Ana", "Carlos"];
+  const [vinculoSelecionado, setVinculoSelecionado] = useState<string | null>(
+    null
+  );
+  const [modalVisible, setModalVisible] = useState(false);
+
   const { addMedication, isAdding } = useMedication();
   const router = useRouter();
 
   const handleCadastro = async () => {
-    // Validações básicas
-    if (!nome || !horario || !descricao) {
+    if (!nome || !horario || !descricao || !vinculoSelecionado) {
       setError("Por favor, preencha todos os campos");
       return;
     }
 
     try {
       setError("");
-      // Utilizamos uma imagem padrão para simplificar
       const imagem =
         "https://fastly.picsum.photos/id/901/200/200.jpg?hmac=BofL61KMrHssTtPwqR7iI272BvpjGsjt5PJ_ultE4Z8";
 
@@ -41,7 +46,6 @@ const Cadastro = () => {
       horarioDate.setHours(parseInt(horas, 10));
       horarioDate.setMinutes(parseInt(minutos, 10));
 
-      // Chama a mutação para adicionar o medicamento
       await addMedication(
         {
           nome,
@@ -51,7 +55,6 @@ const Cadastro = () => {
         },
         {
           onSuccess: () => {
-            // Volta para a lista de medicamentos após o cadastro bem sucedido
             router.replace("/");
           },
         }
@@ -71,6 +74,7 @@ const Cadastro = () => {
             style={{ width: 160, height: 80 }}
           />
         </View>
+
         <View className="pt-8">
           <Text className="font-bold text-2xl text-[#0b8185]">
             Cadastro de Medicamentos
@@ -103,7 +107,6 @@ const Cadastro = () => {
             keyboardType="number-pad"
             value={horario}
             onChangeText={(text) => {
-              // Formata o horário para o padrão HH:MM
               const formattedText = text.replace(/[^0-9]/g, "").slice(0, 4);
               const hours = formattedText.slice(0, 2);
               const minutes = formattedText.slice(2, 4);
@@ -123,6 +126,47 @@ const Cadastro = () => {
             multiline
           />
 
+          <Text className="text-xl font-bold text-[#0b8185] mt-4">Vínculo</Text>
+
+          <TouchableOpacity
+            className="bg-white h-12 px-4 rounded-md shadow justify-center"
+            onPress={() => setModalVisible(true)}
+          >
+            <Text className="text-[#0b8185]">
+              {vinculoSelecionado || "Selecione um vínculo"}
+            </Text>
+          </TouchableOpacity>
+
+          <Modal transparent visible={modalVisible} animationType="fade">
+            <View className="flex-1 bg-black/40 justify-center items-center">
+              <View className="bg-white w-4/5 rounded-lg shadow p-4">
+                <Text className="text-lg font-bold text-[#0b8185] mb-2">
+                  Selecione um vínculo
+                </Text>
+                {vinculos.map((item) => (
+                  <TouchableOpacity
+                    key={item}
+                    className="py-2"
+                    onPress={() => {
+                      setVinculoSelecionado(item);
+                      setModalVisible(false);
+                    }}
+                  >
+                    <Text className="text-[#0b8185]">{item}</Text>
+                  </TouchableOpacity>
+                ))}
+                <TouchableOpacity
+                  className="mt-4 py-2 bg-[#e8dbad] rounded"
+                  onPress={() => setModalVisible(false)}
+                >
+                  <Text className="text-center text-[#0b8185] font-bold">
+                    Cancelar
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
+
           <View className="py-12">
             <TouchableOpacity
               className="bg-[#0b8185] rounded-lg py-2"
@@ -137,12 +181,13 @@ const Cadastro = () => {
                 </Text>
               )}
             </TouchableOpacity>
+
             <TouchableOpacity
-              className="mt-4"
+              className="mt-6 bg-[#e8dbad] rounded-lg py-2"
               onPress={() => router.back()}
               disabled={isAdding}
             >
-              <Text className="text-[#0b8185] text-center font-bold">
+              <Text className="text-[#0b8185] text-center text-lg font-bold">
                 Voltar
               </Text>
             </TouchableOpacity>

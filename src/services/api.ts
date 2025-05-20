@@ -1,4 +1,4 @@
-import axios from "axios";
+/*import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Token storage key - deve ser o mesmo usado no AuthProvider
@@ -6,7 +6,7 @@ const AUTH_TOKEN_KEY = "@Auth:token";
 
 // Crie a instância base do Axios
 const api = axios.create({
-  baseURL: "http://192.168.0.37:5000", // Substitua pela URL do seu backend
+  baseURL: "http://192.168.15.18:5000", // Substitua pela URL do seu backend
   timeout: 10000, // Timeout de 10 segundos
   headers: {
     "Content-Type": "application/json",
@@ -59,3 +59,4 @@ api.interceptors.response.use(
 );
 
 export default api;
+*/

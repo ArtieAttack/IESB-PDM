@@ -30,7 +30,7 @@ const MedicamentoItem = ({ item }: { item: Medication }) => {
             "https://fastly.picsum.photos/id/901/200/200.jpg?hmac=BofL61KMrHssTtPwqR7iI272BvpjGsjt5PJ_ultE4Z8",
         }}
         className="rounded-md"
-        style={{ height: 100, width: 100 }}
+        style={{ height: 75, width: 75 }}
       />
 
       <View className="flex-1 ml-4">

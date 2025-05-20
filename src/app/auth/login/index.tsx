@@ -21,7 +21,7 @@ const Login = () => {
   const router = useRouter();
 
 
-  const handleLogin = async () => {
+  /*const handleLogin = async () => {
     if (!email || !password) {
       setError("Por favor, preencha todos os campos");
       return;
@@ -45,7 +45,14 @@ const Login = () => {
     } finally {
       setIsLoading(false);
     }
+  };*/
+
+  const handleLogin = async () => {
+
+    // Pula o login completamente e navega direto
+    router.replace("/");
   };
+  
 
   return (
     <SafeAreaView className="flex-1 bg-[#feffe4] px-4">
