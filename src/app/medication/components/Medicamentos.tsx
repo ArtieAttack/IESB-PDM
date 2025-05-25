@@ -1,5 +1,5 @@
 import { Separator } from "@/src/components/Separator";
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -7,21 +7,57 @@ import {
   FlatList,
   TouchableOpacity,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 import { useMedication, Medication } from "@/src/hooks/useMedication";
 
 // Componente para exibir cada item de medicamento
 const MedicamentoItem = ({ item }: { item: Medication }) => {
+  const { takeMedication, isTaking } = useMedication();
+  const [showTakenButton, setShowTakenButton] = useState(false);
 
   const horarioFormatado = new Date(item.horario).toLocaleTimeString([], {
     hour: "2-digit",
     minute: "2-digit",
   });
 
+  // Formatar os dias da semana para exibição
+  const diasSemana = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
+  const diasExibicao = item.daysOfWeek
+    ? item.daysOfWeek.split(",").map((dia) => diasSemana[parseInt(dia)])
+    : [];
+
+  const handleTakeMedication = () => {
+    Alert.alert("Confirmar", `Você tomou o medicamento ${item.nome}?`, [
+      { text: "Não", style: "cancel" },
+      {
+        text: "Sim",
+        onPress: () => {
+          takeMedication(
+            { id: item.id },
+            {
+              onSuccess: () => {
+                Alert.alert("Sucesso", "Medicamento marcado como tomado!");
+              },
+              onError: (error) => {
+                console.error("Erro ao registrar medicamento tomado:", error);
+                Alert.alert(
+                  "Erro",
+                  "Não foi possível registrar que o medicamento foi tomado. Tente novamente."
+                );
+              },
+            }
+          );
+        },
+      },
+    ]);
+  };
+
   return (
     <TouchableOpacity
       className="flex-row gap-2 py-6"
-      onPress={() => console.log(`Medicamento selecionado: ${item.nome}`)}
+      onPress={() => setShowTakenButton(!showTakenButton)}
+      activeOpacity={0.7}
     >
       <Image
         source={{
@@ -36,16 +72,50 @@ const MedicamentoItem = ({ item }: { item: Medication }) => {
       <View className="flex-1 ml-4">
         <View className="flex-row justify-between items-start">
           <Text className="text-lg font-bold text-[#0b8185]">{item.nome}</Text>
+
+          {item.dependentUser && (
+            <View className="bg-[#e8dbad] px-2 py-1 rounded-md">
+              <Text className="text-xs text-[#0b8185] font-semibold">
+                Para: {item.dependentUser.name}
+              </Text>
+            </View>
+          )}
         </View>
 
         <Text className="text-sm mb-2" numberOfLines={2}>
           {item.descricao}
         </Text>
 
-        <View className="flex-row items-center gap-2">
+        <View className="flex-row items-center gap-2 mb-2">
           <Text className="text-base font-bold text-[#0b8185]">Horário:</Text>
           <Text className="text-base text-[#0b8185]">{horarioFormatado}</Text>
         </View>
+
+        {diasExibicao.length > 0 && (
+          <View className="flex-row flex-wrap gap-1 mb-2">
+            {diasExibicao.map((dia, index) => (
+              <View key={index} className="bg-[#0b8185] px-2 py-0.5 rounded">
+                <Text className="text-xs text-white">{dia}</Text>
+              </View>
+            ))}
+          </View>
+        )}
+
+        {showTakenButton && (
+          <TouchableOpacity
+            className="bg-[#0b8185] rounded-md py-2 mt-2"
+            onPress={handleTakeMedication}
+            disabled={isTaking}
+          >
+            {isTaking ? (
+              <ActivityIndicator color="white" size="small" />
+            ) : (
+              <Text className="text-white text-center font-bold">
+                Marcar como tomado
+              </Text>
+            )}
+          </TouchableOpacity>
+        )}
       </View>
     </TouchableOpacity>
   );

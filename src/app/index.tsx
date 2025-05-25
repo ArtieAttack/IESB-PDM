@@ -11,19 +11,17 @@ export default function Index() {
   const router = useRouter();
 
   const toggleMenu = () => setMenuOpen((prev) => !prev);
-
   return (
     <View className="flex-1 bg-[#feffe4] relative">
       <Header />
-
-      <ScrollView className="px-4">
+      <View className="flex-1 px-4">
         <View className="flex flex-row items-center py-4 gap-2">
           <Users color="#0b8185" />
           <Text className="text-2xl font-bold text-[#0b8185]">
             Usuários Cadastrados
           </Text>
         </View>
-        <View className="flex-1">
+        <View className="h-56">
           <Usuario />
         </View>
         <View className="flex flex-row items-center py-4 gap-2">
@@ -32,7 +30,7 @@ export default function Index() {
             Remédios Cadastrados
           </Text>
         </View>
-        <View className="flex-1 bg-white shadow-md rounded-lg">
+        <View className="flex-1 bg-white shadow-md rounded-lg mb-4">
           <MedicamentosList />
         </View>
         <View className="py-4">
@@ -42,8 +40,7 @@ export default function Index() {
             </Text>
           </Link>
         </View>
-      </ScrollView>
-
+      </View>
       {menuOpen && (
         <View className="absolute bottom-28 right-5 w-60 bg-white border border-[#0b8185] rounded-xl p-4 shadow-lg z-50">
           <TouchableOpacity
@@ -60,7 +57,7 @@ export default function Index() {
           </TouchableOpacity>
 
           <TouchableOpacity
-            className="flex flex-row items-center gap-2"
+            className="flex flex-row items-center gap-2 mb-3"
             onPress={() => {
               setMenuOpen(false);
               router.push("/users/components/Cadastro");
@@ -71,9 +68,20 @@ export default function Index() {
               Cadastrar novo Usuário
             </Text>
           </TouchableOpacity>
+          <TouchableOpacity
+            className="flex flex-row items-center gap-2"
+            onPress={() => {
+              setMenuOpen(false);
+              router.push("/disease");
+            }}
+          >
+            <HeartPulse color="#0b8185" size={20} />
+            <Text className="text-[#0b8185] font-bold text-sm">
+              Gerenciar Doenças
+            </Text>
+          </TouchableOpacity>
         </View>
       )}
-
       <TouchableOpacity
         className="bg-[#0b8185] w-14 h-14 rounded-full absolute bottom-10 right-5 justify-center items-center shadow-xl z-50"
         onPress={toggleMenu}
